@@ -85,9 +85,9 @@ Abra outro terminal e navegue até a pasta do frontend (ex: /aprende-ai/frontend
 
 Bash
 
-# Assumindo que a pasta do frontend se chama 'frontend'
+# Front-end: pasta templates
 
-cd frontend
+cd templates
 
 # Instalar as dependências do Node.js
 

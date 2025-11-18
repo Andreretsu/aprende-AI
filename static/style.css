@@ -1,0 +1,63 @@
+/* static/css/style.css */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+}
+
+.palavra-destaque {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 1rem 0;
+}
+
+.btn-mic {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px auto;
+  transition: background 0.3s, transform 0.1s;
+  user-select: none; /* Impede selecionar o texto do botão */
+}
+
+/* Efeito quando está gravando */
+.btn-mic.gravando {
+  background-color: #e74c3c; /* Vermelho */
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+}
+
+.hidden {
+  display: none;
+}
+
+.resultado {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e8f6f3;
+  border-radius: 10px;
+  border: 1px solid #d4efdf;
+}
