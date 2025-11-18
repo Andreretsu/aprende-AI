@@ -1,0 +1,9 @@
+baixar:
+python: 3.11.9 -> https://www.python.org/downloads/windows/
+ollama -> https://ollama.com/
+
+
+cmd:
+py -3.11 -m venv .venv
+.venv\Scripts\activate 
+pip install langchain==0.3.0 langchain-community==0.3.0 langchain-chroma pypdf sentence-transformers ollama
