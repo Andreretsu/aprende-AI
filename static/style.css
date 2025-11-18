@@ -40,7 +40,7 @@ body {
   gap: 10px;
   margin: 20px auto;
   transition: background 0.3s, transform 0.1s;
-  user-select: none; /* Impede selecionar o texto do botão */
+  user-select: none;
 }
 
 /* Efeito quando está gravando */

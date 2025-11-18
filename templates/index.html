@@ -5,10 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aprende AI - Teste de Voz</title>
+    <title>Aprende AI - Tutor Inteligente</title>
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
@@ -16,16 +15,13 @@
 
     <div class="container">
         <header>
-            <h1>Aprende AI 🤖</h1>
-            <p>Teste de Alfabetização</p>
+            <h1>aprende AI 🧠</h1>
+            <p>Pergunte sobre a matéria</p>
         </header>
 
         <main>
             <div class="card">
-                <h2>Leia a palavra abaixo:</h2>
-                <div class="palavra-destaque">CASA</div>
-
-                <p id="status-texto" class="status">Segure o botão para falar</p>
+                <p id="status-texto" class="status">Segure o botão e faça sua pergunta</p>
             </div>
 
             <button id="btn-gravar" class="btn-mic">
@@ -34,112 +30,18 @@
             </button>
 
             <div id="resultado-container" class="resultado hidden">
-                <h3>A IA ouviu:</h3>
-                <p id="texto-ouvido">...</p>
-                <p id="mensagem-feedback">...</p>
+                <p id="texto-ouvido" style="font-style: italic; color: #666;">...</p>
+                <hr>
+                <h3>Tutor respondeu:</h3>
+                <p id="mensagem-feedback" style="font-weight: bold; color: #2c3e50;">...</p>
             </div>
         </main>
 
         {% csrf_token %}
     </div>
 
-    <script>
-        // 1. Elementos da Tela
-        const btn = document.getElementById('btn-gravar');
-        const btnTexto = document.getElementById('btn-texto');
-        const statusTexto = document.getElementById('status-texto');
-        const resultadoContainer = document.getElementById('resultado-container');
-        const textoOuvido = document.getElementById('texto-ouvido');
-        const mensagemFeedback = document.getElementById('mensagem-feedback');
+    <script src="{% static 'script.js' %}"></script>
 
-        // 2. Variáveis de Áudio
-        let mediaRecorder;
-        let audioChunks = [];
-
-        // 3. Configurar Microfone ao carregar a página
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                mediaRecorder = new MediaRecorder(stream);
-
-                // Quando o microfone captar dados, guarda no array
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
-                };
-
-                // Quando a gravação parar, envia para o Django
-                mediaRecorder.onstop = enviarAudio;
-            })
-            .catch(err => {
-                console.error("Erro:", err);
-                statusTexto.innerText = "Erro: Microfone não permitido!";
-                statusTexto.style.color = "red";
-                btn.disabled = true;
-            });
-
-        // 4. Eventos do Botão (Mouse e Toque para celular)
-        const iniciarGravacao = (e) => {
-            e.preventDefault(); // Evita selecionar texto
-            if (!mediaRecorder) return;
-
-            audioChunks = []; // Limpa gravações anteriores
-            mediaRecorder.start();
-
-            // Mudança visual
-            btn.classList.add('gravando');
-            btnTexto.innerText = "Gravando...";
-            statusTexto.innerText = "Escutando...";
-            resultadoContainer.classList.add('hidden');
-        };
-
-        const pararGravacao = (e) => {
-            e.preventDefault();
-            if (!mediaRecorder || mediaRecorder.state === "inactive") return;
-
-            mediaRecorder.stop();
-
-            // Volta visual ao normal
-            btn.classList.remove('gravando');
-            btnTexto.innerText = "Segure para Gravar";
-            statusTexto.innerText = "Processando áudio...";
-        };
-
-        // Adiciona os eventos (funciona no PC e no Celular)
-        btn.addEventListener('mousedown', iniciarGravacao);
-        btn.addEventListener('mouseup', pararGravacao);
-        btn.addEventListener('touchstart', iniciarGravacao);
-        btn.addEventListener('touchend', pararGravacao);
-
-        // 5. Função que envia para o Django
-        function enviarAudio() {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            const formData = new FormData();
-
-            // 'audio_data' é o nome que vamos buscar no views.py
-            formData.append('audio_data', audioBlob, 'gravacao.wav');
-
-            // Pega o token CSRF que está escondido no HTML
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-            fetch('/processar-audio/', {
-                method: 'POST',
-                headers: { 'X-CSRFToken': csrfToken },
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Atualiza a tela com a resposta da IA
-                    textoOuvido.innerText = `"${data.texto}"`;
-                    mensagemFeedback.innerText = data.mensagem;
-
-                    statusTexto.innerText = "Pronto!";
-                    resultadoContainer.classList.remove('hidden');
-                })
-                .catch(erro => {
-                    console.error('Erro na requisição:', erro);
-                    statusTexto.innerText = "Erro ao conectar com a IA.";
-                });
-        }
-    </script>
 </body>
 
 </html>
