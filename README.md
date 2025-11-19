@@ -125,3 +125,6 @@ npm start
 
 👨‍💻 Equipe (Unibarretos)
 [André Luiz Campos Silva] - (Função, ex: Desenvolvedor Front-end)
+
+pip install SpeechRecognition
+
